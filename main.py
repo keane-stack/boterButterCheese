@@ -1,47 +1,6 @@
 import random
- 
-from bke import MLAgent, is_winner, opponent, RandomAgent, train_and_plot
-menu_options = {
-    1: 'Option 1',
-    2: 'Option 2',
-    3: 'Option 3',
-    4: 'Exit',
-}
+from bke import start, MLAgent, EvaluationAgent, is_winner, opponent, train_and_plot, can_win
 
-def print_menu():
-    for key in menu_options.keys():
-        print (key, '--', menu_options[key] )
-
-def option1():
-     print('Handle option \'Option 1\'')
-
-def option2():
-     print('Handle option \'Option 2\'')
-
-def option3():
-     print('Handle option \'Option 3\'')
-
-if __name__=='__main__':
-    while(True):
-        print_menu()
-        option = ''
-        try:
-            option = int(input('Enter your choice: '))
-        except:
-            print('Wrong input. Please enter a number ...')
-        #Check what choice was entered and act accordingly
-        if option == 1:
-           option1()
-        elif option == 2:
-            option2()
-        elif option == 3:
-            option3()
-        elif option == 4:
-            print('Thanks message before exiting')
-            exit()
-        else:
-            print('Invalid option. Please enter a number between 1 and 4.')
- 
 class MyAgent(MLAgent):
     def evaluate(self, board):
         if is_winner(board, self.symbol):
@@ -51,16 +10,75 @@ class MyAgent(MLAgent):
         else:
             reward = 0
         return reward
+
+class RandomAgent(EvaluationAgent):
+  def evaluate(self, board, my_symbol, opponent_symbol):
+    getal = 1 
+    if can_win(board, opponent_symbol):
+      getal = getal = 1000
+    return getal
+  
+  
+
+
+menu_options = {
+    1: 'Speel tegen een ander persoon',
+    2: 'Tegen een domme tegenstander spelen',
+    3: 'De tegenstander trainen en plotten',
+    4: 'Tegen een slimme tegenstander spelen',
+}
+
+def print_menu():
+    for key in menu_options.keys():
+        print (key, '--', menu_options[key] )
+
+def vsPlayer():
+  start()
+
+def option2():
+  randomAgent = RandomAgent()
+  start(player_x=randomAgent)
+
+
+def option3():
+     print('Handle option \'De tegenstander trainen en plotten\'')
+
+
+def option4():
+     print('\Tegen een slimme tegenstander spelen\'')
+
+
+
     
+
+def trainAndPlot():
+  random.seed(1)
+  my_agent = MyAgent()
+  random_agent = RandomAgent()
+   
+  train_and_plot(
+      agent=my_agent,
+      validation_agent=random_agent,
+      iterations=50,
+      trainings=100,
+      validations=1000)
+
+
+
+
+
     
-random.seed(1)
- 
-my_agent = MyAgent(alpha=0.8, epsilon=0.2)
-random_agent = RandomAgent()
- 
-train_and_plot(
-    agent=my_agent,
-    validation_agent=random_agent,
-    iterations=50,
-    trainings=100,
-    validations=900)
+print_menu()
+
+option = int(input('Kies een optie: '))
+
+if option == 1:
+   vsPlayer()
+elif option == 2:
+    option2()
+elif option == 3:
+    option3()
+elif option == 4:
+    option4()
+else:
+    print('Geen optie kies een nummer tussen de 1 en 4.')
