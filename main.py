@@ -1,10 +1,10 @@
 import random
-from bke import start, MLAgent, EvaluationAgent, is_winner, opponent, train_and_plot, can_win
+from bke import start, MLAgent, EvaluationAgent, is_winner, opponent, train_and_plot, can_win, train, save, load 
 
 class MyAgent(MLAgent):
     def evaluate(self, board):
         if is_winner(board, self.symbol):
-            reward = 1
+            reward = 10
         elif is_winner(board, opponent[self.symbol]):
             reward = -1
         else:
@@ -17,8 +17,8 @@ class RandomAgent(EvaluationAgent):
     if can_win(board, opponent_symbol):
       getal = getal = 1000
     return getal
-  
-  
+
+
 
 
 menu_options = {
@@ -35,17 +35,20 @@ def print_menu():
 def vsPlayer():
   start()
 
-def option2():
+def randomplayer():
   randomAgent = RandomAgent()
   start(player_x=randomAgent)
 
 
-def option3():
-     print('Handle option \'De tegenstander trainen en plotten\'')
+def trainAndPlot():
+  random_agent = RandomAgent()
+  start(player_x=randomAgent)
 
 
-def option4():
-     print('\Tegen een slimme tegenstander spelen\'')
+def Option4():
+  my_agent = MyAgent()
+  my_agent = load('MyAgent_3000')
+  start(player_x=my_agent)
 
 
 
@@ -75,10 +78,10 @@ option = int(input('Kies een optie: '))
 if option == 1:
    vsPlayer()
 elif option == 2:
-    option2()
+    randomplayer()
 elif option == 3:
-    option3()
+    trainAndPlot()
 elif option == 4:
-    option4()
+    Option4()
 else:
     print('Geen optie kies een nummer tussen de 1 en 4.')
